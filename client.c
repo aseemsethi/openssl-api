@@ -24,9 +24,13 @@ int main() {
 	SSL_load_error_strings(); // loads both crypto and SSL error strings
 	OpenSSL_add_all_algorithms(); // adds all - including _ciphers and _digests
 
+	// SSL_library_init() - ssl/ssl_algs.c
+	// Adds ciphers - EVP_add_digest(EVP_md5, etc)
+	// Loads ciphers into array ssl_cipher_methods[] - ssl_load_ciphers()
 	SSL_library_init(); // important to do this initialization
 
-	// Set up the SSL Context
+	// Set up the SSL Context. SSL_CTX is of type ssl_ctx_st
+	// Members: method=>SSLv23_client_method(), session_cache, stats, callback functions.
 	ctx = SSL_CTX_new(SSLv23_client_method());
 
 	// Load the trust store
@@ -61,12 +65,16 @@ int main() {
 	// Set the SSL_MODE_AUTO_RETRY flag
 	BIO_get_ssl(bio, &ssl);
 	if(!ssl) {
-		printf("\n Could not get SSL pointer");
-		exit(1);
+		printf("\n Could not get SSL pointer"); exit(1);
 	}
 	SSL_set_mode(ssl, SSL_MODE_AUTO_RETRY);
+
 	// Create and setup the connection
 	BIO_set_conn_hostname(bio, "127.0.01:4433");
+
+	// Connect to the remote server. BIO_do_connect() calls BIO_do_handshake()
+	// which calls BIO_ctrl(b,BIO_C_DO_STATE_MACHINE,0,NULL)
+	// This is defined in bio/bio_lib.c
 	if(BIO_do_connect(bio) <= 0) {
 		printf("\nError attempting to connect");
 		ERR_print_errors_fp(stderr);
