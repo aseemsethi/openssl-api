@@ -1,6 +1,7 @@
-OPENSSL API Example
-Abstract:
-This program is a simple SSL Client that does a HTTP GET from a server, 
+OPENSSL API Examples
+Compile all examples with "make"
+
+Client.c : This program is a simple SSL Client that does a HTTP GET from a server, 
 running using "openssl s_server -WWW command.
 Code modifed from linux.die.net/man/3/bio_new_ssl_connect code example
 for using OpenSSL API.
@@ -41,4 +42,5 @@ Note; server.crt is the Public Cert that is needed at the client, for
 Certificate verification. Copy the file into the directory, from where the
 client is being run.
 
+mem.c: This program tries the Memory BIO.
 
