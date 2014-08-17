@@ -2,13 +2,19 @@ CC=gcc
 CFLAGS=-I. -g
 LIBS = -lpthread -lssl
 DEPS = ssl.h utils.h
-OBJ = client.o
+CLIENT_OBJ = client.o
+MEM_OBJ = mem.o
 
 %.o: %.c $(DEPS)
 	$(CC) -c -o $@ $< $(CFLAGS)
 
-client: $(OBJ)
+all: client mem
+
+client: $(CLIENT_OBJ)
+	gcc -o $@ $^ $(CFLAGS) $(LIBS)
+
+mem: $(MEM_OBJ)
 	gcc -o $@ $^ $(CFLAGS) $(LIBS)
 
 clean:
-	rm -f client *.o
+	rm -f client mem *.o
