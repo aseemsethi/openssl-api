@@ -31,6 +31,7 @@ BUF_MEM *bufMem;
 char data[100], data1[100];
 ret = BIO_gets(mem, data, 100);  // points to mem_gets =>mem_read
 printf("\nBuffer Read Data: ret=%d: %s", ret, data);
+
 //Try to Read the data again. Data once read is deleted
 ret = BIO_gets(mem, data1, 100); // result is always null terminated
 printf("\nBuffer Read Data Again: ret=%d: %s", ret, data1);
